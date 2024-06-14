@@ -55,7 +55,7 @@ drop table films, distributors cascade; -- dependent etc also delete
 
 -- FLOATs
 -- real(4 bytes)
--- double(8 bytes)
+-- double precision(8 bytes) it is default when declaring float field in table
 
 -- Auto incrementing types
 -- smallserial (2 bytes) - small auto incrementing integer
@@ -90,12 +90,37 @@ create table users_copy (
 
 create table new_table (
     like old_table
-    including defaults
-    including constraints
+    including defaults,
+    including constraints,
     including indexes
 );
 
 insert into users (fullname, username) values ('John Smith', 'john'), ('John Smith2', 'john2')
+
+create table users_child(
+	age int,
+	email varchar(100)
+) inherits (users); -- if you add to users_child values, they will be automatically added to users
+
+create table products (
+	id serial primary key, 
+	name varchar(200),
+	price float default 7.77
+);
+
+alter table products add column quantity varchar(10);
+
+alter table products add column date varchar(122);
+
+alter table products drop column quantity;
+
+alter table products alter column price set data type integer;
+
+alter table products alter column quantity drop default;
+
+alter table products alter column quantity set data type integer using quantity::integer;
+
+
 
 
 
