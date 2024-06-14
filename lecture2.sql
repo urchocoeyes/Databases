@@ -77,6 +77,26 @@ drop table films, distributors cascade; -- dependent etc also delete
 
 -- boolean
 
+create table users (
+	id serial primary key, 
+	fullname varchar(200),
+	username varchar(100)
+);
+
+create table users_copy (
+	like users including constraints,
+	age integer
+);
+
+create table new_table (
+    like old_table
+    including defaults
+    including constraints
+    including indexes
+);
+
+insert into users (fullname, username) values ('John Smith', 'john'), ('John Smith2', 'john2')
+
 
 
 
