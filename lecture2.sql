@@ -142,7 +142,83 @@ select id,
 from products;
 
 
-	
+SELECT order_id, 
+       COALESCE(shipping_address, billing_address) AS address
+FROM orders; -- Suppose you have a table orders with columns order_id, customer_id, and shipping_address. You want to select the shipping address if it exists; otherwise, use the billing address.
+
+
+SELECT customer_id, 
+       COALESCE(phone1, phone2, phone3) AS contact_phone
+FROM customers; -- You can use COALESCE to handle multiple columns. For instance, if you have columns phone1, phone2, and phone3 and you want to select the first non-null phone number.
+
+
+SELECT order_id, 
+       COALESCE(discount, 0) AS discount
+FROM orders; --Suppose you have a column discount that might be null, and you want to provide a default discount value of 0 when it is null.
+
+
+SELECT *
+FROM products
+WHERE COALESCE(quantity, 0) > 0; -- This query selects all products where the quantity is greater than 0, treating null quantities as 0.
+
+
+select coalesce(name, 'null') as adjusted_name from products; -- заменит все нулл значения на 'null', но пустые strings не заменит
+
+select price from products where exists(select 2 from category where name=products.name) -- one or more records will be returned if EXISTS
+
+-- if you want to know how exists work use this example:
+-- start
+create table products (
+	name char(1),
+	price numeric
+);
+
+insert into products values ('A', 10), ('B', 20), ('C', 30);
+
+create table category (
+	name char(1)
+);
+
+insert into category values ('A'), ('C');
+
+select price from products where exists(select 2 from category where name=products.name) -- will return 10, 30. here 2 not selected, just for testing for existence of names
+-- end
+
+
+select price from products where name not in (select name from category);
+
+
+select name from products where id = any (select id from category where name like '%i');
+-- example
+-- start
+create table products(
+	id serial primary key, 
+	name varchar(50),
+	price decimal(10, 2)
+);
+
+create table category (
+	id serial primary key, 
+	name varchar(30)
+);
+
+INSERT INTO products (id, name, price) VALUES
+(1, 'Apple', 1.00),
+(2, 'Banana', 0.50),
+(3, 'Carrot', 0.30),
+(4, 'Dragonfruit', 3.00),
+(5, 'Elderberry', 2.50),
+(6, 'Fig', 2.00);
+
+INSERT INTO category (id, name) VALUES
+(1, 'Fruit'),
+(2, 'Vegetable'),
+(3, 'Citrus'),
+(4, 'Tropical'),
+(5, 'Berry'),
+(6, 'Fig-Tree');
+--end
+
 
 
 
