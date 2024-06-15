@@ -100,7 +100,7 @@ insert into users (fullname, username) values ('John Smith', 'john'), ('John Smi
 create table users_child(
 	age int,
 	email varchar(100)
-) inherits (users); -- if you add to users_child values, they will be automatically added to users
+) inherits (users); -- if you add to users_child values, they will be automatically added to users. But not vice versa. And structure of users will be inherited to child.
 
 create table products (
 	id serial primary key, 
@@ -120,8 +120,29 @@ alter table products alter column quantity drop default;
 
 alter table products alter column quantity set data type integer using quantity::integer;
 
+select cast(quantity as integer) from products;
+
+create table category (
+	id serial primary key, 
+	name varchar(100)
+);
+
+alter table products add column category_id integer references category (id);
+
+drop table category restrict;
+drop table category cascade;
+
+select * from category where name like '%i';
+
+select id, 
+	case when id = 1 then 'one'
+	     when id = 2 then 'two'
+		 else 'other'
+    end
+from products;
 
 
+	
 
 
 
