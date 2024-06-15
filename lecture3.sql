@@ -38,6 +38,4 @@ insert into users (firstname, lastname) values ('Nazym', 'Tolebek') RETURNING id
 
 update products set price = price * 1.1 where price <= 99.99 RETURNING name, price as new_price;
 
-
-
-
+delete from products where obsoletion_date = 'today' RETURNING *;
