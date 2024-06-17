@@ -39,7 +39,15 @@ select rental_duration, rental_rate from film where length > 150 and rental_rate
 
 select rental_duration, rental_rate from film where length > 150 except distinct select rental_duration, rental_rate from film where rental_rate > 3;
 
--- 131 row
+select rental_duration, rental_rate from film where length > 150 except all select rental_duration, rental_rate from film where rental_rate > 3;
+
+-- EXCEPT: Removes duplicates from the result set.
+-- EXCEPT ALL: Includes duplicates in the result set.
+
+select distinct rental_duration, rental_rate, length from film where rental_rate > 3 and length > 150;
+
+
+
 
 
 
